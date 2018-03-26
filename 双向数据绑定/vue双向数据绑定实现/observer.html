@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+  <script type="text/javascript">
+    function observer (data) {
+  if (!data || typeof data !== 'object') {
+    return new Error('data in not object')
+  }
+  Object.keys(data).forEach( function(index) {
+    definePropertyObserver(data, index, data[index])
+  })
+}
+
+function definePropertyObserver (data, key, value) {
+  observer(value)
+  Object.defineProperty(data, key, {
+    enumerable: true,
+    configurable: true,
+    get: function () {
+      return value
+    },
+    set: function (newVal) {
+      value = newVal
+      console.log(`change = ${value}`)
+      dep.notify()
+    }
+  })
+}
+var people = {
+  girl: {
+    name: ''
+  },
+  boy: {
+    name: ''
+  }
+}
+
+observer(people)
+people.girl.name= "zhang"
+
+  </script>
+</body>
+</html>
