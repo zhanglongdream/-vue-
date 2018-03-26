@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+  <input type="text" v-value= 'value'/>
+  <div v-html= "value"></div>
+  <script type="text/javascript">
+  	var elementArray = [document.querySelector('input'), document.querySelector('div')]
+  	var data = {
+  		value: 'hello World'
+  	}
+
+  	var elementAttr = {
+  		html: function  (value) {
+  			this.innerHTML = value
+  		},
+  		value: function (value) {
+  			this.setAttribute('value', value)
+  		}
+  	}
+
+   function setAttr () {
+   	 for(let i = 0; i < elementArray.length; i++) {
+  		let element = elementArray[i]
+  		for(let j = 0; j < element.attributes.length; j++) {
+        let  attr = element.attributes[j]
+        if (attr.nodeName.indexOf('v-') >= 0) {
+          elementAttr[attr.nodeName.slice(2)].call(element, data[attr.nodeValue])
+        }
+  		}
+  	}
+
+   }
+   function setValue (key, value) {
+     data[key] = value
+     setAttr()
+   }
+   document.querySelector('input').addEventListener('keyup', (e) => {
+   	setValue('value', e.target.value)
+   }, false)
+   setAttr()
+  </script>
+</body>
+</html>

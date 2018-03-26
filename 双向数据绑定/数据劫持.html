@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title></title>
+</head>
+
+<body>
+  <input v-value="value" type="text">
+  <div v-text="value" ></div>
+  <script type="text/javascript">
+  var elementArray = [document.querySelector('input'), document.querySelector('div')]
+  var data = {
+    value: 'hello World'
+  }
+
+  var elementAttr = {
+    text: function(value) {
+      this.innerHTML = value
+    },
+    value: function(value) {
+      this.setAttribute('value', value)
+    }
+  }
+
+  function setAttr() {
+    for (let i = 0; i < elementArray.length; i++) {
+      let element = elementArray[i]
+      element.elementAttr = []
+      for (let j = 0; j < element.attributes.length; j++) {
+        let attr = element.attributes[j]
+        if (attr.nodeName.indexOf('v-') >= 0) {
+          elementAttr[attr.nodeName.slice(2)].call(element, data[attr.nodeValue])
+          element.elementAttr.push(attr.nodeName.slice(2))
+        }
+      }
+    }
+
+  }
+
+  var oldVal
+  var def = function(obj, name) {
+    Object.defineProperty(obj, name, {
+      get: function() {
+        return oldVal
+      },
+      set: function(newVal) {
+        oldVal = newVal
+        setAttr()
+      },
+      enumerable: true,
+      configurable: true
+    })
+  }
+  setAttr()
+
+  def(data, 'value')
+  document.querySelector('input').addEventListener('keyup', (e) => {
+    data.value = e.target.value
+  }, false)
+  </script>
+</body>
+
+</html>
