@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<div id="app">
+		<p>{{input}}</p>
+    <div>{{div}}</div>
+    <input type="text"  v-model = 'input'>
+    {{hello}}
+	</div>
+
+	<script type="text/javascript" src="./js/mvvm.js"></script>
+	<script type="text/javascript" src="./js/Dep.js"></script>
+
+ <script type="text/javascript">
+ 	 let vue = new Vue({
+ 	 	 el : "#app",
+ 	 	 data: {
+ 	 	 	 name: {a: 1},
+ 	 	 	 div: '1111',
+ 	 	 	 input: '1111'
+ 	 	 },
+ 	 	 computed: {
+ 	 	 	 hello () {
+ 	 	 	 	  return this.div + this.input
+ 	 	 	 }
+ 	 	 }
+ 	 })
+
+ </script>
+</body>
+</html>
